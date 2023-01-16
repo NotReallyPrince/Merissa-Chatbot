@@ -7,13 +7,12 @@ from pyrogram.types import *
 
 OWNER_USERNAME = Config.OWNER_USERNAME
 BOT_TOKEN = Config.BOT_TOKEN
-BOT_ID = int(BOT_TOKEN.split(":")[0])
-MERISSA_TOKEN = Config.MERISSA_TOKEN
+bot_id = Config.BOT_ID
 
 bot = Client("MerissaChatbot", bot_token=BOT_TOKEN, api_id=6,
              api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
-@bot.on_message(filters.command("start") & ~filters.edited)
+@bot.on_message(filters.command("start"))
 async def start(client, message):
    if message.chat.type == 'private':
        await message.reply(f"**Hey There, I'm** {BOT_NAME}. **An advanced chatbot with AI. \n\nAdd me to your group and chat with me!**",   
@@ -39,7 +38,7 @@ async def type_and_send(message):
     await message._client.send_chat_action(chat_id, "cancel")
 
 
-@luna.on_message(filters.command("repo") & ~filters.edited)
+@bot.on_message(filters.command("repo"))
 async def repo(_, message):
     await message.reply_text(
         "[GitHub](https://github.com/MaybePrince/Merissa-Chatbot/tree/Sax-ChatBot)"
@@ -48,18 +47,17 @@ async def repo(_, message):
     )
 
 
-@luna.on_message(filters.command("help") & ~filters.edited)
+@bot.on_message(filters.command("help"))
 async def start(_, message):
     await luna.send_chat_action(message.chat.id, "typing")
     await sleep(2)
     await message.reply_text("/repo - Get Repo Link")
 
 
-@luna.on_message(
+@bot.on_message(
     ~filters.private
     & filters.text
     & ~filters.command("help")
-    & ~filters.edited,
     group=69,
 )
 async def chat(_, message):
@@ -80,8 +78,8 @@ async def chat(_, message):
     await type_and_send(message)
 
 
-@luna.on_message(
-    filters.private & ~filters.command("help") & ~filters.edited
+@bot.on_message(
+    filters.private & ~filters.command("help")
 )
 async def chatpm(_, message):
     if not message.text:
