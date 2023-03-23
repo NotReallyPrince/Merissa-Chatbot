@@ -8,7 +8,6 @@ from pyrogram.types import *
 OWNER_USERNAME = Config.OWNER_USERNAME
 BOT_TOKEN = Config.BOT_TOKEN
 BOT_ID = int(BOT_TOKEN.split(":")[0])
-BOT_NAME = Config.BOT_NAME
 
 chatbot_group = 2
 
