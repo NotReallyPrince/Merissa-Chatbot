@@ -7,12 +7,15 @@ from pyrogram.types import *
 
 OWNER_USERNAME = Config.OWNER_USERNAME
 BOT_TOKEN = Config.BOT_TOKEN
-bot_id = Config.BOT_ID
+BOT_ID = int(BOT_TOKEN.split(":")[0])
+BOT_NAME = Config.BOT_NAME
+
+chatbot_group = 2
 
 bot = Client("MerissaChatbot", bot_token=BOT_TOKEN, api_id=6,
              api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
-@bot.on_message(filters.command("start"))
+@bot.on_message(filters.command("start") & ~filters.edited)
 async def start(client, message):
    if message.chat.type == 'private':
        await message.reply(f"**Hey There, I'm** {BOT_NAME}. **An advanced chatbot with AI. \n\nAdd me to your group and chat with me!**",   
@@ -21,70 +24,44 @@ async def start(client, message):
                                         InlineKeyboardButton(
                                             "Dev", url=f"https://t.me/{OWNER_USERNAME}"),
                                         InlineKeyboardButton(
-                                            "Repo", url="https://github.com/MaybePrince/Merissa-Chatbot/tree/Sax-ChatBot")
+                                            "Repo", url="https://github.com/Prince-Botz/Merissa-Chatbot")
                                     ]]
                             ),               
            )
    else:
        await message.reply("**I'm alive, check my pm to know more about me!**")
 
-async def type_and_send(message):
-    chat_id = message.chat.id
-    user_id = message.from_user.id if message.from_user else 0
-    query = message.text.strip()
-    await message._client.send_chat_action(chat_id, "typing")
-    response = requests.get(f"https://api.princexd.tech/chatbot?text={query}").json()["message"]
-    await message.reply_text(response)
-    await message._client.send_chat_action(chat_id, "cancel")
-
-
-@bot.on_message(filters.command("repo"))
-async def repo(_, message):
-    await message.reply_text(
-        "[GitHub](https://github.com/MaybePrince/Merissa-Chatbot/tree/Sax-ChatBot)"
-        + " | [Group](t.me/MerissaxSupport)",
-        disable_web_page_preview=True,
-    )
-
-
-@bot.on_message(filters.command("help"))
-async def start(_, message):
-    await luna.send_chat_action(message.chat.id, "typing")
-    await sleep(2)
-    await message.reply_text("/repo - Get Repo Link")
-
-
 @bot.on_message(
-    filters.private,
-    & filters.text,
-    & ~filters.command("help"),
-    group=69,
+    filters.text
+    & filters.reply
+    & ~filters.bot
+    & ~filters.via_bot
+    & ~filters.forwarded
+    & ~filters.edited,
+    group=chatbot_group,  
 )
-async def chat(_, message):
-    if message.reply_to_message:
-        if not message.reply_to_message.from_user:
-            return
-        from_user_id = message.reply_to_message.from_user.id
-        if from_user_id != bot_id:
-            return
-    else:
-        match = re.search(
-            "[.|\n]{0,}luna[.|\n]{0,}",
-            message.text.strip(),
-            flags=re.IGNORECASE,
-        )
-        if not match:
-            return
-    await type_and_send(message)
-
-
-@bot.on_message(
-    filters.private & ~filters.command("help")
-)
-async def chatpm(_, message):
-    if not message.text:
+async def chatbot_talk(_, message: Message):
+    chat = message.chat.id
+    if not message.reply_to_message:
         return
-    await type_and_send(message) 
+    if not message.reply_to_message.from_user:
+        return
+    if message.reply_to_message.from_user.id != BOT_ID:
+        return
+    if message.text[0] == "/":
+        return
+    if chat:
+        await bot.send_chat_action(message.chat.id, "typing")
+        lang = tr.translate(message.text).src
+        trtoen = (
+            message.text if lang == "en" else tr.translate(message.text, dest="en").text
+        ).replace(" ", "%20")
+        text = trtoen.replace(" ", "%20") if len(message.text) < 2 else trtoen
+        merissaurl = requests.get(
+            f"https://api.princexd.tech/chatbot?text={text}"
+        )
+        textmsg = merissaurl.json()["message"]       
+        await message.reply_text(msg.text)
 
-print("Merissa Sex-Chatbot Started!")
+print("Merissa Chatbot Started!")
 bot.run()
