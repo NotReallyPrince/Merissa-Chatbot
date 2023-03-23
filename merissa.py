@@ -51,7 +51,7 @@ async def chatbot_talk(_, message: Message):
         return
     if chat:
         await bot.send_chat_action(message.chat.id, "typing")
-        text = message.text.replace(" ", "%20") if len(message.text) < 2 else trtoen
+        text = message.text.replace(" ", "%20") if len(message.text) < 2 else message.text
         merissaurl = requests.get(
             f"https://api.princexd.tech/chatbot?text={text}"
         )
