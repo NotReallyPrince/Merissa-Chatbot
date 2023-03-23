@@ -55,9 +55,9 @@ async def start(_, message):
 
 
 @bot.on_message(
-    ~filters.private
-    & filters.text
-    & ~filters.command("help")
+    filters.private,
+    & filters.text,
+    & ~filters.command("help"),
     group=69,
 )
 async def chat(_, message):
