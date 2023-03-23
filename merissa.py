@@ -52,16 +52,12 @@ async def chatbot_talk(_, message: Message):
         return
     if chat:
         await bot.send_chat_action(message.chat.id, "typing")
-        lang = tr.translate(message.text).src
-        trtoen = (
-            message.text if lang == "en" else tr.translate(message.text, dest="en").text
-        ).replace(" ", "%20")
-        text = trtoen.replace(" ", "%20") if len(message.text) < 2 else trtoen
+        text = message.text.replace(" ", "%20") if len(message.text) < 2 else trtoen
         merissaurl = requests.get(
             f"https://api.princexd.tech/chatbot?text={text}"
         )
         textmsg = merissaurl.json()["message"]       
-        await message.reply_text(msg.text)
+        await message.reply_text(textmsg)
 
 print("Merissa Chatbot Started!")
 bot.run()
