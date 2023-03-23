@@ -49,9 +49,9 @@ async def chatbot_talk(_, message: Message):
         await bot.send_chat_action(message.chat.id, "typing")
         text = message.text.replace(" ", "%20") if len(message.text) < 2 else message.text
         merissaurl = requests.get(
-            f"https://api.princexd.tech/chatbot?text={text}"
+            f"https://api.princexd.tech/ask?text={text}"
         )
-        textmsg = merissaurl.json()["message"]       
+        textmsg = merissaurl.json()["answer"]       
         await message.reply_text(textmsg)
 
 print("Merissa Chatbot Started!")
