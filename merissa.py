@@ -54,24 +54,5 @@ async def chatbot_talk(_, message: Message):
         textmsg = merissaurl.json()["answer"]       
         await message.reply_text(textmsg)
 
-@bot.on_message(
-    filters.regex("doggyraid | @doggyraid_bot | doggy raid | doggy")
-    & ~filters.bot
-    & ~filters.via_bot
-    & ~filters.forwarded
-    & ~filters.channel
-    & ~filters.edited)
-async def chatbotadv(_, message):
-    chat_id = message.chat.id
-    n = chatb.find_one({"chatbot": chat_id})
-    if not n:
-        return
-    if message.text[0] == "/":
-        return
-    await bot.send_chat_action(message.chat.id, "typing")    
-    text = message.text.replace(" ", "%20") if len(message.text) < 2 else message.text
-    chatgpt = requests.get(f"https://api.princexd.tech/ask?text={text}").json()["answer"]
-    await message.reply_text(chatgpt)
-
 print("Merissa Chatbot Started!")
 bot.run()
