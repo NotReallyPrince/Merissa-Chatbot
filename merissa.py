@@ -59,7 +59,6 @@ async def chatbot_talk(_, message: Message):
     & ~filters.bot
     & ~filters.via_bot
     & ~filters.forwarded
-    & ~filters.reply
     & ~filters.channel
     & ~filters.edited)
 async def chatbotadv(_, message):
