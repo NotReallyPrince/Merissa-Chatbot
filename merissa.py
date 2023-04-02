@@ -28,7 +28,7 @@ async def start(client, message):
                   InlineKeyboardButton("Repo", url="https://github.com/NotReallyPrince/Merissa-Chatbot")
                ],
                [
-                  InlineKeyboardButton("Dev", url=f"https://t.me/{BOT_USERNAME}?startgroup=new")
+                  InlineKeyboardButton("✚ Add Me To Your Group ✚", url=f"https://t.me/{BOT_USERNAME}?startgroup=new")
                ]
             ]
        ))
