@@ -8,20 +8,16 @@ from pyrogram.types import *
 OWNER_USERNAME = Config.OWNER_USERNAME
 BOT_TOKEN = Config.BOT_TOKEN
 BOT_ID = int(BOT_TOKEN.split(":")[0])
+BOT_USERNAME = Config.BOT_USERNAME
 
 chatbot_group = 2
 
 bot = Client("MerissaChatbot", bot_token=BOT_TOKEN, api_id=6,
              api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
-bot.start()
-getme = bot.get_me()
-BOT_NAME = getme.first_name
-BOT_USERNAME = getme.username
-
 @bot.on_message(filters.command("start"))
 async def start(client, message):
-   await message.reply_text(f"**Hey There, I'm** {BOT_NAME}. **An advanced chatbot with AI. \n\nAdd me to your group and chat with me!**",   
+   await message.reply_text(f"**Hey There, I'm advanced chatbot with AI.\n\nAdd me to your group and chat with me!**",   
    reply_markup=InlineKeyboardMarkup(
             [
                [
@@ -63,3 +59,4 @@ async def chatbot_talk(_, message: Message):
         await message.reply_text(textmsg)
 
 print("Merissa Chatbot Started!")
+bot.run()
