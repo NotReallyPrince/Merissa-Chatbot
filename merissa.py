@@ -63,4 +63,3 @@ async def chatbot_talk(_, message: Message):
         await message.reply_text(textmsg)
 
 print("Merissa Chatbot Started!")
-bot.run()
