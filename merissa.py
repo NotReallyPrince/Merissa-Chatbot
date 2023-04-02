@@ -14,17 +14,24 @@ chatbot_group = 2
 bot = Client("MerissaChatbot", bot_token=BOT_TOKEN, api_id=6,
              api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
+getme = bot.get_me()
+BOT_NAME = getme.first_name
+BOT_USERNAME = getme.username
+
 @bot.on_message(filters.command("start"))
 async def start(client, message):
-   await message.reply_text("**Hey There, I'm** DoggyRaid. **An advanced chatbot with AI. \n\nAdd me to your group and chat with me!**",   
-                            reply_markup=InlineKeyboardMarkup(
-                                [[
-                                        InlineKeyboardButton(
-                                            "Dev", url=f"https://t.me/{OWNER_USERNAME}"),
-                                        InlineKeyboardButton(
-                                            "Repo", url="https://github.com/NotReallyPrince/Merissa-Chatbot")
-                                ]]
-    ))
+   await message.reply_text(f"**Hey There, I'm** {BOT_NAME}. **An advanced chatbot with AI. \n\nAdd me to your group and chat with me!**",   
+   reply_markup=InlineKeyboardMarkup(
+            [
+               [
+                  InlineKeyboardButton("Dev", url=f"https://t.me/{OWNER_USERNAME}"),
+                  InlineKeyboardButton("Repo", url="https://github.com/NotReallyPrince/Merissa-Chatbot")
+               ],
+               [
+                  InlineKeyboardButton("Dev", url=f"https://t.me/{BOT_USERNAME}?startgroup=new")
+               ]
+            ]
+       ))
 
 @bot.on_message(
     filters.text
