@@ -9,11 +9,11 @@
     "env": {
         "BOT_TOKEN": {
             "description": "taken from @botfather",
-            "required": true
+            "required": true,
         },
         "OWNER_USERNAME": {
             "description": "Your telegram Username Without @",
-            "required": true
+            "required": true,
         }
     }
 }
